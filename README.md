@@ -1,1 +1,1 @@
-# planningpoker-be
+# Planning Poker Backend
