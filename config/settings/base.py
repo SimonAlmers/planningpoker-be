@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
@@ -17,7 +18,8 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 REPO_DIR = Path(__file__).resolve().parent.parent.parent
-BASE_DIR = REPO_DIR / "planningpoker"
+BASE_DIR = os.path.join(REPO_DIR, "planningpoker")
+sys.path.append(BASE_DIR)
 load_dotenv(dotenv_path=os.path.join(REPO_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
@@ -43,6 +45,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+CUSTOM_APPS = [
+    'common',
+    'users',
+]
+
+THIRD_PARTY_APPS = [
+
+]
+
+INSTALLED_APPS += CUSTOM_APPS + THIRD_PARTY_APPS
+
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
