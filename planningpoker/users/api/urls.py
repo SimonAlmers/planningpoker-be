@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.urls import path, include
+from django.urls import include, path
 from djoser.views import UserViewSet
 
 list_paths = UserViewSet.as_view({"post": "list"})
