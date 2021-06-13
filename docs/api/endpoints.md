@@ -25,12 +25,12 @@
 
 # Projects
 
-| State | Methods | Permissions | Endpoint                                | Description |
-| ----- | ------- | ----------- | --------------------------------------- | ----------- |
-|       |         |             | `/api/v1/projects/`                     |             |
-|       |         |             | `/api/v1/projects/:uuid/`               |             |
-|       |         |             | `/api/v1/projects/:uuid/members/`       |             |
-|       |         |             | `/api/v1/projects/:uuid/members/:uuid/` |             |
+| State | Methods                         | Permissions                 | Endpoint                                      | Description |
+| ----- | ------------------------------- | --------------------------- | --------------------------------------------- | ----------- |
+| Done  | `POST`, `GET`                   | `IsAuthenticated`           | `/api/v1/projects/`                           |             |
+| Done  | `GET`, `PUT`, `PATCH`, `DELETE` | `Project Owner` or ReadOnly | `/api/v1/projects/:id/`                       |             |
+| Done  | `POST`                          | `Project Owner`             | `/api/v1/projects/:project_id/members/`       |             |
+| Done  | `PUT`, `PATCH`, `DELETE`        | `Project Owner`             | `/api/v1/projects/:project_id/members/:uuid/` |             |
 
 # Stories
 

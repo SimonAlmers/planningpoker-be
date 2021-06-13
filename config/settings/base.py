@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 CUSTOM_APPS = [
     "common",
     "users",
+    "projects",
 ]
 
 THIRD_PARTY_APPS = [
