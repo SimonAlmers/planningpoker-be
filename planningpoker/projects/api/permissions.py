@@ -13,6 +13,17 @@ class IsProjectOwner(BasePermission):
         return member.exists()
 
 
+class IsProjectMemberOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        member = obj.get_members().filter(user=user, project=obj).first()
+
+        if request.method in SAFE_METHODS:
+            return member is not None
+        else:
+            return member is not None and member.role >= ProjectMember.MEMBER
+
+
 class ProjectIsMember(BasePermission):
     def has_object_permission(self, request, view, obj):
         user = request.user

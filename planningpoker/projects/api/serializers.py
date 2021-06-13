@@ -3,6 +3,7 @@ from users.api.serializers import UserSerializer
 
 from ..models import Project, ProjectMember
 
+from stories.api.serializers import StorySerializer
 
 
 class ProjectMemberDetailSerializer(serializers.ModelSerializer):
@@ -43,6 +44,7 @@ class ProjectListItemSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    stories = StorySerializer(many=True, source="get_stories", read_only=True)
     members = ProjectMemberListSerializer(
         many=True, source="get_members", read_only=True
     )
@@ -54,6 +56,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             "uuid",
             "title",
             "description",
+            "stories",
             "members",
             "created_at",
             "updated_at",
