@@ -34,13 +34,14 @@
 
 # Stories
 
-| State | Methods | Permissions | Endpoint                                              | Description |
-| ----- | ------- | ----------- | ----------------------------------------------------- | ----------- |
-|       |         |             | `/api/v1/projects/:uuid/stories/`                     |             |
-|       |         |             | `/api/v1/projects/:uuid/stories/:uuid/`               |             |
-|       |         |             | `/api/v1/projects/:uuid/stories/:uuid/votes/`         |             |
-|       |         |             | `/api/v1/projects/:uuid/stories/:uuid/comments/`      |             |
-|       |         |             | `/api/v1/projects/:uuid/stories/:uuid/comments/:uuid` |             |
+| State | Methods                         | Permissions                  | Endpoint                                                       | Description |
+| ----- | ------------------------------- | ---------------------------- | -------------------------------------------------------------- | ----------- |
+| Done  | `POST`, `GET`                   | `Project Member` or ReadOnly | `/api/v1/projects/:id/stories/`                                |             |
+|       | `PUT`                           | `Project Member` or ReadOnly | `/api/v1/projects/:id/stories/reorder/`                        |             |
+|       | `POST`, `GET`                   | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/stories/:story_id/votes/`        |             |
+| Done  | `GET`, `PUT`, `PATCH`, `DELETE` | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/stories/:id/`                    |             |
+| Done  | `POST`, `GET`                   | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/stories/:story_id/comments/`     |             |
+| Done  | `GET`, `PUT`, `PATCH`, `DELETE` | `Comment Author` or ReadOnly | `/api/v1/projects/:project_id/stories/:story_id/comments/:id/` |             |
 
 # Planning Sessions
 

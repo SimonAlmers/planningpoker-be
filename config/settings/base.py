@@ -50,6 +50,7 @@ CUSTOM_APPS = [
     "common",
     "users",
     "projects",
+    "stories",
 ]
 
 THIRD_PARTY_APPS = [

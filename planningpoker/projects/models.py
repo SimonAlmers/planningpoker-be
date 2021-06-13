@@ -36,6 +36,10 @@ class Project(TimeStampedModel):
         """
         return ProjectMember.objects.filter(project=self)
 
+    def get_stories(self):
+        from stories.models import Story
+
+        return Story.objects.filter(project=self)
 
 
 class ProjectMember(TimeStampedModel):

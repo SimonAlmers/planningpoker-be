@@ -40,6 +40,7 @@ urlpatterns = [
     path("auth/api-token-refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     url(r"^api/v1/", include("users.api.urls")),
     url(r"^api/v1/", include("projects.api.urls")),
+    url(r"^api/v1/", include("stories.api.urls")),
     url(
         r"^docs/$",
         schema_view.with_ui("swagger", cache_timeout=0),
