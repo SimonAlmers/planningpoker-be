@@ -130,3 +130,4 @@ dmypy.json
 
 # Custom Ingores
 .vscode/sftp.json
+/planningpoker/static
