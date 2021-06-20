@@ -52,6 +52,7 @@ CUSTOM_APPS = [
     "projects",
     "stories",
     "planningsessions",
+    "notifications",
 ]
 
 THIRD_PARTY_APPS = [
