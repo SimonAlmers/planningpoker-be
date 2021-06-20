@@ -1,6 +1,6 @@
 import uuid
 
-from common.models import TimeStampedModel
+from common.models import TimeStampedModel, UUIDModel
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
@@ -9,11 +9,8 @@ from django.db import models
 from .managers import UserManager
 
 
-class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
+class User(AbstractBaseUser, PermissionsMixin, UUIDModel, TimeStampedModel):
     email = models.EmailField(unique=True)
-    uid = models.UUIDField(
-        db_index=True, unique=True, default=uuid.uuid4, editable=False
-    )
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)

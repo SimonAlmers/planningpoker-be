@@ -13,9 +13,9 @@ class ProjectMemberInline(admin.TabularInline):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ["title", "member_count", "created_at", "updated_at"]
-    readonly_fields = ["uuid", "created_at", "updated_at"]
+    readonly_fields = ["id", "created_at", "updated_at"]
     inlines = [ProjectMemberInline]
-    search_fields = ["uuid", "title"]
+    search_fields = ["id", "title"]
 
     def member_count(self, obj):
         return obj.member_count

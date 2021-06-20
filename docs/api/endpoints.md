@@ -45,13 +45,13 @@
 
 # Planning Sessions
 
-| State | Methods | Permissions | Endpoint                                                                      | Description |
-| ----- | ------- | ----------- | ----------------------------------------------------------------------------- | ----------- |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/`                                    |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/`                              |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/participants/`                 |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/participants/:uuid/`           |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/participants/:uuid/heartbeat/` |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/participants/:uuid/leave/`     |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/comments/`                     |             |
-|       |         |             | `/api/v1/projects/:uuid/planningsessions/:uuid/comments/:uuid`                |             |
+| State | Methods                         | Permissions                  | Endpoint                                                                          | Description |
+| ----- | ------------------------------- | ---------------------------- | --------------------------------------------------------------------------------- | ----------- |
+| Done  | `POST`, `GET`                   | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/`                                          |             |
+| Done  | `GET`, `PUT`, `PATCH`, `DELETE` | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/`                              |             |
+|       | `POST`, `GET`                   | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/participants/`                 |             |
+|       | `GET`,  `DELETE`                | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/participants/:uuid/`           |             |
+|       | `POST`,                         | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/participants/:uuid/heartbeat/` |             |
+|       | `POST`,                         | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/participants/:uuid/leave/`     |             |
+|       | `POST`, `GET`                   | `Project Member` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/comments/`                     |             |
+|       | `GET`, `PUT`, `PATCH`, `DELETE` | `Comment Author` or ReadOnly | `/api/v1/projects/:project_id/sessions/:session_id/comments/:uuid`                |             |

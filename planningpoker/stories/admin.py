@@ -11,12 +11,14 @@ class StoryAdmin(admin.ModelAdmin):
         "title",
         "project",
         "status",
+        "order",
         "requester",
         "created_at",
         "updated_at",
     ]
-    readonly_fields = ["created_at", "updated_at"]
+    readonly_fields = ["id", "created_at", "updated_at"]
     list_filter = ["status"]
+    search_fields = ["project__id", "project__title", "title", "id"]
 
 
 @admin.register(StoryComment)

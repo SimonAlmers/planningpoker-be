@@ -13,21 +13,22 @@ class StoryGeneric:
     queryset = Story.objects.none()
     serializer_class = StorySerializer
     search_fields = ["title", "description"]
+    lookup_field = "id"
 
 
 class StoryList(StoryGeneric, generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated, IsProjectMemberOrReadOnly]
 
     def get(self, request, project_id, *args, **kwargs):
-        project = Project.objects.get(pk=project_id)
+        project = Project.objects.get(id=project_id)
         self.check_object_permissions(request, project)
-        self.queryset = Story.objects.filter(project__pk=project_id)
+        self.queryset = Story.objects.filter(project__id=project_id)
         return super().get(request, *args, **kwargs)
 
     def post(self, request, project_id, *args, **kwargs):
-        project = Project.objects.get(pk=project_id)
+        project = Project.objects.get(id=project_id)
         self.check_object_permissions(request, project)
-        request.data["project"] = project_id
+        request.data["project_id"] = project_id
         request.data["requester"] = request.user.pk
         return super().post(request, *args, **kwargs)
 
@@ -58,33 +59,48 @@ class StoryReorder(generics.UpdateAPIView):
     lookup_field = "project_id"
 
     def update(self, request, project_id, *args, **kwargs):
-        project = Project.objects.get(pk=project_id)
+        project = Project.objects.get(id=project_id)
         self.check_object_permissions(request, project)
-        # TODO June 13, 2021: Implement Reporder functions
-        return super().update(request, *args, **kwargs)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            story_id = serializer.validated_data.get("story")
+            index = serializer.validated_data.get("index")
+            story = Story.objects.get(id=story_id)
+            data = serializer.data
+            last_story = Story.objects.get_last_story_for_project(story.project.id)
+            if index >= last_story.order:
+                story.move_to_end()
+                data["index"] = last_story.order + 1
+            else:
+                story.move_to_index(index)
+            return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # return super().update(request, *args, **kwargs)
 
 
 class StoryCommentGeneric:
     permission_classes = [IsAuthenticated, StoryPermissionIsMemberOrReadOnly]
     serializer_class = StoryCommentSerializer
     queryset = StoryComment.objects.none()
+    lookup_field = "id"
 
 
 class StoryCommentList(StoryCommentGeneric, generics.ListCreateAPIView):
     def get(self, request, project_id, story_id, *args, **kwargs):
-        story = Story.objects.get(pk=story_id)
+        story = Story.objects.get(id=story_id)
         self.check_object_permissions(request, story)
 
         self.queryset = StoryComment.objects.filter(
-            story__pk=story_id, story__project__pk=project_id
+            story__id=story_id, story__project__id=project_id
         )
         return super().get(request, *args, **kwargs)
 
     def post(self, request, project_id, story_id, *args, **kwargs):
-        story = Story.objects.get(pk=story_id)
+        story = Story.objects.get(id=story_id)
         self.check_object_permissions(request, story)
         request.data["story"] = story_id
-        request.data["user"] = request.user.pk
+        request.data["user_id"] = request.user.id
         return super().post(request, *args, **kwargs)
 
 
@@ -93,17 +109,17 @@ class StoryCommentDetail(StoryCommentGeneric, generics.RetrieveUpdateDestroyAPIV
 
     def update_queryset(self, story_id, project_id):
         self.queryset = StoryComment.objects.filter(
-            story__pk=story_id, story__project__pk=project_id
+            story__id=story_id, story__project__id=project_id
         )
 
-    def get(self, request, project_id, story_id, pk, *args, **kwargs):
+    def get(self, request, project_id, story_id, id, *args, **kwargs):
         self.update_queryset(story_id, project_id)
         return super().get(request, *args, **kwargs)
 
-    def update(self, request, project_id, story_id, pk, *args, **kwargs):
+    def update(self, request, project_id, story_id, id, *args, **kwargs):
         self.update_queryset(story_id, project_id)
         return super().update(request, *args, **kwargs)
 
-    def destroy(self, request, project_id, story_id, pk, *args, **kwargs):
+    def destroy(self, request, project_id, story_id, id, *args, **kwargs):
         self.update_queryset(story_id, project_id)
         return super().destroy(request, *args, **kwargs)

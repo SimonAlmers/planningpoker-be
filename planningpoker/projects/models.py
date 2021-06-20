@@ -2,7 +2,7 @@ import uuid as uuid_lib
 
 from django.conf import settings
 from django.db import models
-from planningpoker.common.models import TimeStampedModel
+from common.models import TimeStampedModel, UUIDModel
 
 # Create your models here.
 
@@ -19,13 +19,15 @@ class ProjectManager(models.Manager):
         return project
 
 
-class Project(TimeStampedModel):
-    uuid = models.UUIDField(db_index=True, default=uuid_lib.uuid4, editable=False)
+class Project(UUIDModel, TimeStampedModel):
     title = models.CharField(max_length=63)
     description = models.TextField(blank=True, null=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, through="ProjectMember")
 
     objects = ProjectManager()
+
+    class Meta:
+        ordering = ['-updated_at']
 
     def __str__(self):
         return self.title
@@ -42,7 +44,7 @@ class Project(TimeStampedModel):
         return Story.objects.filter(project=self)
 
 
-class ProjectMember(TimeStampedModel):
+class ProjectMember(UUIDModel, TimeStampedModel):
     VIEWER = 1
     MEMBER = 2
     OWNER = 3
@@ -52,8 +54,8 @@ class ProjectMember(TimeStampedModel):
         (OWNER, "Owner"),
     ]
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, to_field="id", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, to_field="id", on_delete=models.CASCADE)
     role = models.IntegerField(choices=ROLE_CHOICES, default=MEMBER)
 
     class Meta:

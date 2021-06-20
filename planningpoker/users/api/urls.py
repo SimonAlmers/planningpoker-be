@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from django.urls import include, path
 from djoser.views import UserViewSet
+from . import views
 
-list_paths = UserViewSet.as_view({"post": "list"})
 me_paths = UserViewSet.as_view(
     {
         "get": "me",
@@ -21,7 +21,6 @@ reset_email = UserViewSet.as_view({"post": "reset_username"})
 reset_email_confirm = UserViewSet.as_view({"post": "reset_username_confirm"})
 
 DJOSER_URLS = [
-    path("users/", list_paths, name="user-list"),
     path("users/me/", me_paths, name="me-detail"),
     path("users/activation/", activation_path, name="user-activation"),
     path("users/resend_activation/", resend_activation, name="resend_activation"),
@@ -38,5 +37,5 @@ DJOSER_URLS = [
 ]
 
 urlpatterns = [
-    url(r"", include(DJOSER_URLS)),
-]
+    path("users/", views.Register.as_view(), name="register"),
+] + DJOSER_URLS
