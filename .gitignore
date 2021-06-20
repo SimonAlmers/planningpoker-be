@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom Ingores
+.vscode/sftp.json
+/planningpoker/static
+planning-poker-base.adminsdk.json
+.vscode/settings.json
