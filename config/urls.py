@@ -40,5 +40,6 @@ urlpatterns = [
     path("api/v1/", include("projects.api.urls")),
     path("api/v1/", include("stories.api.urls")),
     path("api/v1/", include("planningsessions.api.urls")),
+    path("api/v1/", include("notifications.api.urls")),
     path("docs/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui" ),
 ]
