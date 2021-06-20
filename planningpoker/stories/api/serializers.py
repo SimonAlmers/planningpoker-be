@@ -30,9 +30,7 @@ class StoryCommentSerializer(serializers.ModelSerializer):
             "user",
             "user_id",
         ]
-        extra_kwargs = {
-            "user": {"read_only":True}
-        }
+        extra_kwargs = {"user": {"read_only": True}}
 
 
 class StorySerializer(serializers.ModelSerializer):
@@ -44,16 +42,14 @@ class StorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = [
-            'id',
-            'title',
-            'description',
-            'project',
-            'project_id',
-            'comments',
-            'order',
-            'created_at',
-            'updated_at',
+            "id",
+            "title",
+            "description",
+            "project",
+            "project_id",
+            "comments",
+            "order",
+            "created_at",
+            "updated_at",
         ]
-        extra_kwargs = {
-            "project": {"read_only":True}
-        }
+        extra_kwargs = {"project": {"read_only": True}}

@@ -2,6 +2,7 @@ from .test_setup import TestSetUp
 from rest_framework.test import force_authenticate
 from .factories import UserFactory
 
+
 class TestViews(TestSetUp):
     def test_user_can_not_register_without_data(self):
         response = self.client.post(self.register_url)
@@ -35,8 +36,8 @@ class TestViews(TestSetUp):
             "password": self.user_data["password"],
         }
         obtain_token_response = self.client.post(self.login_url, data)
-        refresh_token = obtain_token_response.data['refresh']
-        response = self.client.post(self.refresh_token_url, {"refresh": refresh_token })
+        refresh_token = obtain_token_response.data["refresh"]
+        response = self.client.post(self.refresh_token_url, {"refresh": refresh_token})
         self.assertEqual(response.status_code, 200)
 
     def test_user_can_not_refresh_same_token_twice(self):
@@ -46,8 +47,12 @@ class TestViews(TestSetUp):
             "password": self.user_data["password"],
         }
         obtain_token_response = self.client.post(self.login_url, data)
-        refresh_token = obtain_token_response.data['refresh']
-        first_refresh_response = self.client.post(self.refresh_token_url, {"refresh": refresh_token })
-        second_refresh_response = self.client.post(self.refresh_token_url, {"refresh": refresh_token })
+        refresh_token = obtain_token_response.data["refresh"]
+        first_refresh_response = self.client.post(
+            self.refresh_token_url, {"refresh": refresh_token}
+        )
+        second_refresh_response = self.client.post(
+            self.refresh_token_url, {"refresh": refresh_token}
+        )
         self.assertEqual(first_refresh_response.status_code, 200)
         self.assertEqual(second_refresh_response.status_code, 401)

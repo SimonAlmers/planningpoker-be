@@ -5,10 +5,10 @@ DEBUG = False
 ALLOWED_HOSTS = []
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'test_db',
-        'TEST': {'NAME': 'test_db'},
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "test_db",
+        "TEST": {"NAME": "test_db"},
     }
 }
 

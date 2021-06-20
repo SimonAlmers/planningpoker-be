@@ -28,18 +28,14 @@ class PlanningSessionGeneric:
     queryset = PlanningSession.objects.none()
     lookup_field = "id"
 
-
     def get_queryset(self):
-        project_id = self.kwargs['project_id']
+        project_id = self.kwargs["project_id"]
         queryset = PlanningSession.objects.filter(project__id=project_id)
         return queryset
-
 
     def check_project_permissions(self, project_id):
         project = Project.objects.get(id=project_id)
         self.check_object_permissions(self.request, project)
-
-
 
 
 class PlanningSessionList(PlanningSessionGeneric, generics.ListCreateAPIView):
@@ -165,4 +161,3 @@ class StoryVoteDetail(StoryVoteGeneric, generics.RetrieveUpdateAPIView):
     def destroy(self, request, project_id, story_id, *args, **kwargs):
         self.update_queryset(project_id, story_id)
         return super().destroy(request, *args, **kwargs)
-

@@ -13,19 +13,17 @@ class ProjectMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectMember
         fields = [
-            "id", 
-            "role", 
-            "created_at", 
-            "updated_at", 
-            "user", 
-            "user_id", 
+            "id",
+            "role",
+            "created_at",
+            "updated_at",
+            "user",
+            "user_id",
             "project",
             "project_id",
         ]
-        extra_kwargs = {
-            "project": {"read_only":True},
-            "user": {"read_only":True}
-        }
+        extra_kwargs = {"project": {"read_only": True}, "user": {"read_only": True}}
+
 
 class ProjectMemberListSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)

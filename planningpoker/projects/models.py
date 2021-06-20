@@ -27,7 +27,7 @@ class Project(UUIDModel, TimeStampedModel):
     objects = ProjectManager()
 
     class Meta:
-        ordering = ['-updated_at']
+        ordering = ["-updated_at"]
 
     def __str__(self):
         return self.title
@@ -55,7 +55,9 @@ class ProjectMember(UUIDModel, TimeStampedModel):
     ]
 
     project = models.ForeignKey(Project, to_field="id", on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, to_field="id", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, to_field="id", on_delete=models.CASCADE
+    )
     role = models.IntegerField(choices=ROLE_CHOICES, default=MEMBER)
 
     class Meta:

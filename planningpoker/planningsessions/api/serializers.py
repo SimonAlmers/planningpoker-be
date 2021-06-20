@@ -23,7 +23,7 @@ class PlanningSessionCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlanningSessionComment
-        fields =[
+        fields = [
             "id",
             "user",
             "user_id",
@@ -35,8 +35,8 @@ class PlanningSessionCommentSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         extra_kwargs = {
-            "user": {"read_only":True},
-            "session": {"read_only":True},
+            "user": {"read_only": True},
+            "session": {"read_only": True},
         }
 
 
@@ -66,8 +66,8 @@ class PlanningSessionSerializer(serializers.ModelSerializer):
             "project_id",
         ]
         extra_kwargs = {
-            "project": {"read_only":True},
-            "focused_story": {"read_only":True},
+            "project": {"read_only": True},
+            "focused_story": {"read_only": True},
         }
 
 
@@ -87,5 +87,5 @@ class VoteSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         extra_kwargs = {
-            "user": {"read_only":True},
+            "user": {"read_only": True},
         }

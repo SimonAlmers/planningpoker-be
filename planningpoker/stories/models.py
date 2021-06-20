@@ -4,8 +4,8 @@ from django.conf import settings
 from django.db import models
 from projects.models import Project
 
-class StoryManager(models.Manager):
 
+class StoryManager(models.Manager):
     def create_story(self, user, project, title, description=None):
         """
         Creates an returns a story and assign a user as story requester.
@@ -15,12 +15,12 @@ class StoryManager(models.Manager):
         if last_story is not None:
             order = last_story.order + 1
         story = self.create(
-            title=title, 
-            description=description, 
-            requester=user, 
-            project=project, 
-            order=order
-            )
+            title=title,
+            description=description,
+            requester=user,
+            project=project,
+            order=order,
+        )
         return story
 
     def get_last_story_for_project(self, project_id):
@@ -88,11 +88,9 @@ class Story(UUIDModel, TimeStampedModel):
     class Meta:
         verbose_name_plural = "Stories"
         ordering = ["-status", "order"]
-        # unique_together = ["project", "order"]
 
     def __str__(self):
         return self.title
-
 
     def move_to_index(self, index):
         """
@@ -100,10 +98,14 @@ class Story(UUIDModel, TimeStampedModel):
         """
         print(f"Move to INDEX: {index}!")
         if self.order > index:
-            stories = Story.objects.filter(project=self.project, order__lt=self.order, order__gte=index)
+            stories = Story.objects.filter(
+                project=self.project, order__lt=self.order, order__gte=index
+            )
             start_value = index + 1
         else:
-            stories = Story.objects.filter(project=self.project, order__lte=index, order__gt=self.order)
+            stories = Story.objects.filter(
+                project=self.project, order__lte=index, order__gt=self.order
+            )
             start_value = self.order
 
         for order, story in enumerate(stories, start=start_value):
@@ -117,7 +119,7 @@ class Story(UUIDModel, TimeStampedModel):
         This function updated the story's order to the specified index and updates any affected stories.
         """
         self.move_to_index(0)
-    
+
     def move_to_end(self):
         """
         This function updated the story's order to 1 greater than the order of the currently last story.
@@ -130,7 +132,11 @@ class Story(UUIDModel, TimeStampedModel):
 
 
 class StoryComment(UUIDModel, TimeStampedModel):
-    parent = models.ForeignKey("self", to_field="id", blank=True, null=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, to_field="id", on_delete=models.PROTECT)
+    parent = models.ForeignKey(
+        "self", to_field="id", blank=True, null=True, on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, to_field="id", on_delete=models.PROTECT
+    )
     text = models.TextField()
     story = models.ForeignKey(Story, to_field="id", on_delete=models.CASCADE)

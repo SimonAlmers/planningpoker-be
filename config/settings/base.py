@@ -69,7 +69,7 @@ INSTALLED_APPS += CUSTOM_APPS + THIRD_PARTY_APPS
 AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -234,11 +234,12 @@ FIREBASE_SECRET = ""
 FIREBASE_URL = os.environ["FIREBASE_URL"]
 FIREBASE_NAME = "BASE"
 
-FIREBASE_CREDENTIAL_JSON = os.path.realpath(os.path.join(REPO_DIR, "planning-poker-base.adminsdk.json"))
+FIREBASE_CREDENTIAL_JSON = os.path.realpath(
+    os.path.join(REPO_DIR, "planning-poker-base.adminsdk.json")
+)
 
 
 FIREBASE_CREDENTIALS = credentials.Certificate(FIREBASE_CREDENTIAL_JSON)
-FIREBASE_APP = firebase_admin.initialize_app(FIREBASE_CREDENTIALS, {
-    'databaseURL': FIREBASE_URL
-}, name=FIREBASE_NAME)
-
+FIREBASE_APP = firebase_admin.initialize_app(
+    FIREBASE_CREDENTIALS, {"databaseURL": FIREBASE_URL}, name=FIREBASE_NAME
+)
