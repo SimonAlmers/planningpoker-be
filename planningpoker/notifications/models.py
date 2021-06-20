@@ -39,3 +39,14 @@ class SessionCommentNotificationData(models.Model):
         on_delete=models.CASCADE 
     )
     comment = models.ForeignKey(PlanningSessionComment, to_field="id", on_delete=models.CASCADE)
+
+def notification_post_save(sender, instance, created, **kwargs):
+    firebase = FirebaseNotification()
+    firebase.update_notification(instance)
+
+def notification_pre_delete(sender, instance, **kwargs):
+    firebase = FirebaseNotification()
+    firebase.delete_notification(instance)
+
+post_save.connect(notification_post_save, sender=Notification)
+pre_delete.connect(notification_pre_delete, sender=Notification)
