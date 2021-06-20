@@ -32,25 +32,25 @@ pip install -r requirements.txt
 Run migrations on your local database
 
 ```bash
-python manage.py migrate --settings config.settings.simon
+python manage.py migrate --settings config.settings.development
 ```
 
 Create a superuser to be able to login to the django admin.
 
 ```bash
-python manage.py createsuperuser --settings config.settings.simon
+python manage.py createsuperuser --settings config.settings.development
 ```
 
 Collect static files
 
 ```bash
-python manage.py collectstatic --settings config.settings.simon
+python manage.py collectstatic --settings config.settings.development
 ```
 
 Spin up a development server on localhost port `8080`
 
 ```bash
-python manage.py runserver 0:8080 --settings config.settings.simon
+python manage.py runserver 0:8080 --settings config.settings.development
 ```
 
 # Visit the Django Admin
