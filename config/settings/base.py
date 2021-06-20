@@ -51,6 +51,7 @@ CUSTOM_APPS = [
     "users",
     "projects",
     "stories",
+    "planningsessions",
 ]
 
 THIRD_PARTY_APPS = [
@@ -67,6 +68,7 @@ INSTALLED_APPS += CUSTOM_APPS + THIRD_PARTY_APPS
 AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -174,6 +176,7 @@ REST_FRAMEWORK = {
         "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ),
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
     "DEFAULT_THROTTLE_RATES": {"anon": "10/m", "user": "100/m"},
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 100,
@@ -218,5 +221,5 @@ DJOSER = {
         "current_user": "users.api.serializers.UserSerializer",
         "user": "users.api.serializers.UserSerializer",
     },
-    "USER_ID_FIELD": "uid",
+    "USER_ID_FIELD": "id",
 }

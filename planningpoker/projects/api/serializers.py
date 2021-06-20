@@ -7,10 +7,25 @@ from stories.api.serializers import StorySerializer
 
 
 class ProjectMemberDetailSerializer(serializers.ModelSerializer):
+    project_id = serializers.UUIDField(write_only=True)
+    user_id = serializers.UUIDField(write_only=True)
+
     class Meta:
         model = ProjectMember
-        fields = ["id", "role", "created_at", "updated_at", "user", "project"]
-
+        fields = [
+            "id", 
+            "role", 
+            "created_at", 
+            "updated_at", 
+            "user", 
+            "user_id", 
+            "project",
+            "project_id",
+        ]
+        extra_kwargs = {
+            "project": {"read_only":True},
+            "user": {"read_only":True}
+        }
 
 class ProjectMemberListSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -31,7 +46,6 @@ class ProjectListItemSerializer(serializers.ModelSerializer):
         model = Project
         fields = [
             "id",
-            "uuid",
             "title",
             "description",
             "created_at",
@@ -53,7 +67,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = [
             "id",
-            "uuid",
             "title",
             "description",
             "stories",

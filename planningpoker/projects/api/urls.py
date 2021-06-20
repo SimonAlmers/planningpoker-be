@@ -6,17 +6,17 @@ from . import views
 urlpatterns = [
     path("projects/", views.ProjectList.as_view(), name="project-list"),
     path(
-        "projects/<int:pk>/",
+        "projects/<uuid:id>/",
         views.ProjectDetail.as_view(),
         name="project-detail",
     ),
     path(
-        "projects/<int:project_id>/members/",
+        "projects/<uuid:project_id>/members/",
         views.ProjectMemberList.as_view(),
         name="project-member-list",
     ),
     path(
-        "projects/<int:project_id>/members/<int:pk>/",
+        "projects/<uuid:project_id>/members/<uuid:id>/",
         views.ProjectMemberDetail.as_view(),
         name="project-member-detail",
     ),

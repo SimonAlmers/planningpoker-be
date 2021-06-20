@@ -26,6 +26,7 @@ class ProjectGeneric:
     serializer_class = ProjectSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["title"]
+    lookup_field = "id"
 
     def get_queryset(self):
         user = self.request.user
@@ -45,17 +46,18 @@ class ProjectMemberGeneric:
     permission_classes = [IsAuthenticated, ProjectMemberIsMember]
     queryset = ProjectMember.objects.all()
     serializer_class = ProjectMemberDetailSerializer
+    lookup_field = "id"
 
 
 class ProjectMemberList(ProjectMemberGeneric, APIView):
     permission_classes = [IsAuthenticated, IsProjectOwner]
 
     def post(self, request, project_id):
-        project = Project.objects.get(pk=project_id)
+        project = Project.objects.get(id=project_id)
         self.check_object_permissions(self.request, project)
 
         data = request.data
-        data["project"] = project_id
+        data["project_id"] = project_id
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             serializer.save()

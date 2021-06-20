@@ -5,7 +5,7 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    readonly_fields = ["uid"]
+    readonly_fields = ["id"]
     list_display = [
         "email",
         "first_name",
@@ -23,7 +23,7 @@ class UserAdmin(admin.ModelAdmin):
     ]
     search_fields = [
         "email",
-        "uid",
+        "id",
         "first_name",
         "last_name",
     ]

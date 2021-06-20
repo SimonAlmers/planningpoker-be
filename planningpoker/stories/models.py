@@ -1,69 +1,33 @@
-from common.models import TimeStampedModel
+from common.models import TimeStampedModel, UUIDModel
+from bulk_update.helper import bulk_update
 from django.conf import settings
 from django.db import models
 from projects.models import Project
 
-# Create your models here.
+class StoryManager(models.Manager):
+
+    def create_story(self, user, project, title, description=None):
+        """
+        Creates an returns a story and assign a user as story requester.
+        """
+        order = 0
+        last_story = self.get_last_story_for_project(project.id)
+        if last_story is not None:
+            order = last_story.order + 1
+        story = self.create(
+            title=title, 
+            description=description, 
+            requester=user, 
+            project=project, 
+            order=order
+            )
+        return story
+
+    def get_last_story_for_project(self, project_id):
+        return Story.objects.filter(project__id=project_id).order_by("order").last()
 
 
-# class StoryManager(models.Manager):
-
-
-#     def get_first_story(self, project_id):
-#         return Story.objects.get(project__pk=project_id, prev_story=None)
-
-#     def get_last_story(self, project_id):
-#         return Story.objects.get(project__pk=project_id, next_story=None)
-
-#     def get_next_story(self, story):
-#         return story.next_story
-
-#     def get_previous_story(self, story):
-#         return story.prev_story
-
-#     def move_to_first(self, story):
-#         """
-#         Takes a story that should be moved to start of project.
-
-#         - Sets `prev_story` on passed story to `None`
-#         - Sets `next_story` on passed story to current `first story`
-#         - Sets passed story as current first story's `prev_story`
-#         """
-#         first_story = self.get_first_story(story.project.id)
-
-#         story.prev_story = None
-#         story.next_story = first_story
-#         story.save()
-
-#         first_story.prev_story = story
-#         first_story.save()
-#         return story
-
-#     def reorder_story(self, story, before_story, after_story):
-#         story_was_first = story.prev_story == None
-#         story_was_last = story.next_story == None
-
-#         if before_story == after_story:
-#             raise Exception("The before_story and after_story can NOT be the same!")
-
-#         if before_story is not None and after_story is None:
-#             print("MOVE TO START!")
-#             return self.move_to_first(story)
-
-#         if before_story is None and after_story is not None:
-#             print("MOVE TO END!")
-
-#         if before_story and after_story:
-#             print("MOVE TO INBETWEEN!")
-
-#         story.before_story = None
-#         story.after_story = None
-#         story.save()
-
-#         return story
-
-
-class Story(TimeStampedModel):
+class Story(UUIDModel, TimeStampedModel):
     POINT_SCALE = [
         (0, "Pass"),
         (1, 1),
@@ -102,13 +66,14 @@ class Story(TimeStampedModel):
         (DEPLOYED, "Deployed"),
     ]
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, to_field="id", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     score = models.IntegerField(choices=POINT_SCALE, blank=True, null=True)
     kind = models.IntegerField(choices=KIND_CHOICES, default=FEATURE)
     requester = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        to_field="id",
         on_delete=models.SET_NULL,
         related_name="requester",
         null=True,
@@ -116,35 +81,56 @@ class Story(TimeStampedModel):
     )
     owners = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
     status = models.IntegerField(choices=STATUS_CHOICES, default=UNSCHEDULED)
-    next_story = models.ForeignKey(
-        "self",
-        on_delete=models.SET_NULL,
-        related_name="_next_story",
-        blank=True,
-        null=True,
-    )
-    prev_story = models.ForeignKey(
-        "self",
-        on_delete=models.SET_NULL,
-        related_name="_previous_story",
-        blank=True,
-        null=True,
-    )
+    order = models.IntegerField(blank=True, null=True)
 
-    # objects = StoryManager()
+    objects = StoryManager()
 
     class Meta:
         verbose_name_plural = "Stories"
-        ordering = ["-status"]
+        ordering = ["-status", "order"]
+        # unique_together = ["project", "order"]
 
     def __str__(self):
         return self.title
 
 
-class StoryComment(TimeStampedModel):
-    parent = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    def move_to_index(self, index):
+        """
+        This function sets the story's order to the specified index and updates any affected stories.
+        """
+        print(f"Move to INDEX: {index}!")
+        if self.order > index:
+            stories = Story.objects.filter(project=self.project, order__lt=self.order, order__gte=index)
+            start_value = index + 1
+        else:
+            stories = Story.objects.filter(project=self.project, order__lte=index, order__gt=self.order)
+            start_value = self.order
+
+        for order, story in enumerate(stories, start=start_value):
+            story.order = order
+        bulk_update(stories)
+        self.order = index
+        self.save()
+
+    def move_to_start(self):
+        """
+        This function updated the story's order to the specified index and updates any affected stories.
+        """
+        self.move_to_index(0)
+    
+    def move_to_end(self):
+        """
+        This function updated the story's order to 1 greater than the order of the currently last story.
+        No other stories are updated for performance reasons.
+        """
+        print("Move to END!")
+        last_story = Story.objects.get_last_story_for_project(self.project.id)
+        self.order = last_story.order + 1
+        self.save()
+
+
+class StoryComment(UUIDModel, TimeStampedModel):
+    parent = models.ForeignKey("self", to_field="id", blank=True, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, to_field="id", on_delete=models.PROTECT)
     text = models.TextField()
-    story = models.ForeignKey(Story, on_delete=models.CASCADE)
-
-
+    story = models.ForeignKey(Story, to_field="id", on_delete=models.CASCADE)

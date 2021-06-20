@@ -3,27 +3,27 @@ from . import views
 
 urlpatterns = [
     path(
-        "projects/<int:project_id>/stories/",
+        "projects/<uuid:project_id>/stories/",
         views.StoryList.as_view(),
         name="story-list",
     ),
     path(
-        "projects/<int:project_id>/stories/reorder/",
+        "projects/<uuid:project_id>/stories/reorder/",
         views.StoryReorder.as_view(),
         name="story-list-reorder",
     ),
     path(
-        "projects/<int:project_id>/stories/<int:pk>/",
+        "projects/<uuid:project_id>/stories/<uuid:id>/",
         views.StoryDetail.as_view(),
         name="story-detail",
     ),
     path(
-        "projects/<int:project_id>/stories/<int:story_id>/comments/",
+        "projects/<uuid:project_id>/stories/<uuid:story_id>/comments/",
         views.StoryCommentList.as_view(),
         name="story-comment-list",
     ),
     path(
-        "projects/<int:project_id>/stories/<int:story_id>/comments/<int:pk>/",
+        "projects/<uuid:project_id>/stories/<uuid:story_id>/comments/<uuid:id>/",
         views.StoryCommentDetail.as_view(),
         name="story-comment-detail",
     ),
