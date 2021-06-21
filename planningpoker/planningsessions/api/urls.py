@@ -33,8 +33,14 @@ urlpatterns = [
         views.StoryVoteDetail.as_view(),
         name="story-vote-detail",
     ),
-    # "projects/:project_id/sessions/:session_id/participants/"
-    # "projects/:project_id/sessions/:session_id/participants/:uuid/"
-    # "projects/:project_id/sessions/:session_id/participants/:uuid/heartbeat/"
-    # "projects/:project_id/sessions/:session_id/participants/:uuid/leave/"
+    path(
+        "projects/<uuid:project_id>/sessions/<uuid:session_id>/participants/heartbeat/",
+        views.SessionParticipantHeartBeat.as_view(),
+        name="session-participant-heartbeat",
+    ),
+    path(
+        "projects/<uuid:project_id>/sessions/<uuid:session_id>/participants/exit/",
+        views.SessionParticipantExit.as_view(),
+        name="session-participant-exit",
+    ),
 ]

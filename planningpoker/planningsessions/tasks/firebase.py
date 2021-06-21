@@ -83,7 +83,13 @@ class FirebasePlanningSessionParticipant:
         ref = self.get_participant_ref(participant)
         ref.set(
             {
-                "user": str(participant.user),
+                "id": str(participant.id),
+                "user": {
+                    "id": str(participant.user.id),
+                    "firstName": participant.user.first_name,
+                    "lastName": participant.user.last_name,
+                    "initials": participant.user.get_initials(),
+                },
                 "lastSeen": str(participant.last_seen),
                 "lastExit": str(participant.last_exit),
             }
