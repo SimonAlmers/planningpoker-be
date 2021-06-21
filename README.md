@@ -33,6 +33,8 @@ touch .env
 
 Add env variables to `.env` file:
 
+The value for the `FIREBASE_URL` will be explained in the [Firebase Realtime Database Setup](https://github.com/SimonAlmers/planningpoker-fe/blob/main/docs/FIREBASE_SETUP.md)
+
 ```bash
 export SECRET_KEY='***' # Generate Django Secret here:
 export DATABASE_URL='postgres://[user]:[password]@localhost/[database_name]' # Postgres Database URL (not needed if using development- or test-settings which uses sqlite)

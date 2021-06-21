@@ -20,6 +20,7 @@ class FirebaseNotification:
         ref = self.get_notification_ref(notification)
         ref.set(
             {
+                "id": str(notification.id),
                 "kind": str(notification.kind),
                 "sender": str(notification.sender),
                 "message": str(notification.message),
