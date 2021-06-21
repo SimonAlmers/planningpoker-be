@@ -36,7 +36,6 @@ class Project(UUIDModel, TimeStampedModel):
     def create_invite_code(self):
         invite = ProjectInviteCode.objects.create(project=self)
         return invite
-        
 
     def get_members(self):
         """
@@ -55,7 +54,7 @@ class ProjectInviteCode(UUIDModel, TimeStampedModel):
         Project,
         to_field="id",
         related_name="invite_code",
-        on_delete=models.CASCADE, 
+        on_delete=models.CASCADE,
     )
 
     def is_valid(self):

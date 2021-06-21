@@ -73,14 +73,15 @@ class ProjectMemberList(ProjectMemberGeneric, generics.ListCreateAPIView):
 class ProjectMemberDetail(
     ProjectMemberGeneric, generics.UpdateAPIView, generics.DestroyAPIView
 ):
-    
+
     permission_classes = [IsAuthenticated, ProjectMemberIsProjectOwner]
 
 
-
 class ProjectInviteCodeDetail(APIView):
-    permission_classes = [IsAuthenticated, ]
-     
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
     def get(self, request, project_id, *args, **kwargs):
         project_id = self.kwargs["project_id"]
         project = Project.objects.get(id=project_id)
@@ -88,17 +89,28 @@ class ProjectInviteCodeDetail(APIView):
         serializer = ProjectInviteCodeSerialiser(invite_code)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class AcceptInviteCode(APIView):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [
+        IsAuthenticated,
+    ]
 
     def post(self, request, *args, **kwargs):
         invite_code = request.data["invite_code"]
         try:
             invite = ProjectInviteCode.objects.get(id=invite_code)
             if invite is not None and invite.is_valid():
-                ProjectMember.objects.get_or_create(user=request.user, project=invite.project )
-                return Response({"project_id": str(invite.project.id)},status.HTTP_200_OK)
+                ProjectMember.objects.get_or_create(
+                    user=request.user, project=invite.project
+                )
+                return Response(
+                    {"project_id": str(invite.project.id)}, status.HTTP_200_OK
+                )
 
-            return Response({"message": "The invite has expired!"}, status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "The invite has expired!"}, status.HTTP_400_BAD_REQUEST
+            )
         except:
-            return Response({"message": "The invite has expired!"}, status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "The invite has expired!"}, status.HTTP_400_BAD_REQUEST
+            )

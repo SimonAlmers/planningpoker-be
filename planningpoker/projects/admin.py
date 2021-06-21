@@ -25,6 +25,7 @@ class ProjectAdmin(admin.ModelAdmin):
         queryset = queryset.annotate(member_count=Count("members"))
         return queryset
 
+
 @admin.register(ProjectInviteCode)
 class ProjectInviteCodeAdmin(admin.ModelAdmin):
     readonly_fields = ["id", "created_at"]
