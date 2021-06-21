@@ -4,7 +4,9 @@ from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from planningsessions.models import PlanningSessionComment
 
+from stories.models import Story, StoryComment
 from .tasks.firebase import FirebaseNotification
+
 
 
 class Notification(UUIDModel, TimeStampedModel):
@@ -52,6 +54,63 @@ class SessionCommentNotificationData(models.Model):
     comment = models.ForeignKey(
         PlanningSessionComment, to_field="id", on_delete=models.CASCADE
     )
+
+
+
+
+class SystemNotificationData(models.Model):
+     notification = models.OneToOneField(
+        Notification,
+        primary_key=True,
+        to_field="id",
+        related_name="system",
+        on_delete=models.CASCADE,
+    )
+
+
+class ProjectInviteNotificationData(models.Model):
+    notification = models.OneToOneField(
+        Notification,
+        primary_key=True,
+        to_field="id",
+        related_name="project_invite",
+        on_delete=models.CASCADE,
+    )
+    # invite = models.ForeignKey(, to_field="id", on_delete=models.CASCADE)
+
+
+class SessionInviteNotificationData(models.Model):
+    notification = models.OneToOneField(
+        Notification,
+        primary_key=True,
+        to_field="id",
+        related_name="session_invite",
+        on_delete=models.CASCADE,
+    )
+    # invite = models.ForeignKey(, to_field="id", on_delete=models.CASCADE)
+
+
+
+class StoryCommentNotificationData(models.Model):
+    notification = models.OneToOneField(
+        Notification,
+        primary_key=True,
+        to_field="id",
+        related_name="story_comment",
+        on_delete=models.CASCADE,
+    )
+    comment = models.ForeignKey(StoryComment, to_field="id", on_delete=models.CASCADE)
+
+class StoryNotificationData(models.Model):
+    notification = models.OneToOneField(
+        Notification,
+        primary_key=True,
+        to_field="id",
+        related_name="story",
+        on_delete=models.CASCADE,
+    )
+    story = models.ForeignKey(Story, to_field="id", on_delete=models.CASCADE)
+
 
 
 def notification_post_save(sender, instance, created, **kwargs):
