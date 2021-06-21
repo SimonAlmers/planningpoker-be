@@ -1,6 +1,7 @@
 import random
-from users.models import User
+
 from common.obfuscater import Obfuscater
+from users.models import User
 
 
 class UserFactory:

@@ -1,12 +1,8 @@
-from django.conf import settings
-from firebase_admin import db, credentials, get_app
 import datetime
+
+from django.conf import settings
+from firebase_admin import credentials, db, get_app
 from rest_framework import serializers
-
-
-from django.conf import settings
-from firebase_admin import db, credentials, get_app
-import datetime
 
 
 class FirebaseVote:
@@ -23,7 +19,6 @@ class FirebaseVote:
 
     def update_vote(self, vote):
         ref = self.get_vote_ref(vote)
-
         ref.set(
             {
                 "id": str(vote.id),

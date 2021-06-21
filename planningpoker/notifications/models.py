@@ -1,11 +1,10 @@
-from django.db import models
+from common.models import TimeStampedModel, UUIDModel
 from django.conf import settings
-from planningsessions.models import PlanningSessionComment
-from common.models import UUIDModel, TimeStampedModel
-from .tasks.firebase import FirebaseNotification
+from django.db import models
 from django.db.models.signals import post_save, pre_delete
+from planningsessions.models import PlanningSessionComment
 
-# Create your models here.
+from .tasks.firebase import FirebaseNotification
 
 
 class Notification(UUIDModel, TimeStampedModel):

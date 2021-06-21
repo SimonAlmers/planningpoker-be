@@ -1,9 +1,10 @@
-import uuid as uuid_lib
 import datetime
-from django.utils import timezone
+import uuid as uuid_lib
+
+from common.models import TimeStampedModel, UUIDModel
 from django.conf import settings
 from django.db import models
-from common.models import TimeStampedModel, UUIDModel
+from django.utils import timezone
 
 # Create your models here.
 

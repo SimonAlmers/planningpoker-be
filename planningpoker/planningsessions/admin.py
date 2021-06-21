@@ -7,8 +7,6 @@ from .models import (
     Vote,
 )
 
-# Register your models here.
-
 
 @admin.register(PlanningSession)
 class PlanningSessionAdmin(admin.ModelAdmin):

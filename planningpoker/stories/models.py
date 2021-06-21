@@ -1,5 +1,5 @@
-from common.models import TimeStampedModel, UUIDModel
 from bulk_update.helper import bulk_update
+from common.models import TimeStampedModel, UUIDModel
 from django.conf import settings
 from django.db import models
 from projects.models import Project
