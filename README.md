@@ -1,5 +1,7 @@
 # Planning Poker Backend
 
+[Frontend Repo](https://www.github.com/SimonAlmers/planningpoker-fe)
+
 # [API Documentation](./docs/api/endpoints.md)
 
 # Setup
@@ -21,6 +23,20 @@ Change into the `project` directory
 
 ```bash
 cd project
+```
+
+Add `.env` file in the root of the project dir
+
+```bash
+touch .env
+```
+
+Add env variables to `.env` file:
+
+```bash
+export SECRET_KEY='***' # Generate Django Secret here:
+export DATABASE_URL='postgres://[user]:[password]@localhost/[database_name]' # Postgres Database URL (not needed if using development- or test-settings which uses sqlite)
+export FIREBASE_URL='***'
 ```
 
 Install required packages:

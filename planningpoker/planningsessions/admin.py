@@ -12,19 +12,20 @@ from .models import (
 
 @admin.register(PlanningSession)
 class PlanningSessionAdmin(admin.ModelAdmin):
+    list_display = ["project", "focused_story"]
     readonly_fields = ["id"]
 
 
 @admin.register(PlanningSessionParticipant)
 class PlanningSessionParticipantAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["user", "session", "created_at", "last_seen"]
 
 
 @admin.register(PlanningSessionComment)
 class PlanningSessionCommentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["user", "session", "created_at"]
 
 
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["user", "point", "story", "created_at"]
