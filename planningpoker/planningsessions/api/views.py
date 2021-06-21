@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from projects.api.permissions import IsProjectMemberOrReadOnly
 from projects.models import Project
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.utils import timezone
 
 from ..models import (
     PlanningSession,
@@ -161,3 +164,22 @@ class StoryVoteDetail(StoryVoteGeneric, generics.RetrieveUpdateAPIView):
     def destroy(self, request, project_id, story_id, *args, **kwargs):
         self.update_queryset(project_id, story_id)
         return super().destroy(request, *args, **kwargs)
+
+
+class SessionParticipantHeartBeat(APIView):
+    def post(self, request, project_id, session_id, *args, **kwargs):
+        user = request.user
+        session = PlanningSession.objects.get(id=session_id, project__id=project_id)
+        participant, created = PlanningSessionParticipant.objects.get_or_create(session=session, user=user)
+        participant.last_seen = timezone.now()
+        participant.save()
+        return Response(status=status.HTTP_200_OK)
+
+class SessionParticipantExit(APIView):
+    def post(self, request, project_id, session_id, *args, **kwargs):
+        user = request.user
+        session = PlanningSession.objects.get(id=session_id, project__id=project_id)
+        participant, created = PlanningSessionParticipant.objects.get_or_create(session=session, user=user)
+        participant.last_exit = timezone.now()
+        participant.save()
+        return Response(status=status.HTTP_200_OK)
