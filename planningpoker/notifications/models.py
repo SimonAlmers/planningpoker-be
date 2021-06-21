@@ -41,6 +41,7 @@ class Notification(UUIDModel, TimeStampedModel):
     )
     read_at = models.DateTimeField(blank=True, null=True)
 
+
 class SessionCommentNotificationData(models.Model):
     notification = models.OneToOneField(
         Notification,
@@ -52,7 +53,6 @@ class SessionCommentNotificationData(models.Model):
     comment = models.ForeignKey(
         PlanningSessionComment, to_field="id", on_delete=models.CASCADE
     )
-
 
 
 def notification_post_save(sender, instance, created, **kwargs):
