@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from .serializers import NotificationSerializer
-from ..models import Notification
 from django.utils import timezone
+from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from ..models import Notification
+from .serializers import NotificationSerializer
 
 # Create your views here.
 

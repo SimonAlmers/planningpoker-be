@@ -2,8 +2,6 @@ from django.contrib import admin
 
 from .models import Story, StoryComment
 
-# Register your models here.
-
 
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):

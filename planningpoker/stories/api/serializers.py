@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from ..models import Story, StoryComment
 from users.api.serializers import UserSerializer
+
+from ..models import Story, StoryComment
 
 
 class StoryReorderSerializer(serializers.Serializer):

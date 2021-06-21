@@ -1,12 +1,8 @@
-from django.conf import settings
-from firebase_admin import db, credentials, get_app
 import datetime
+
+from django.conf import settings
+from firebase_admin import credentials, db, get_app
 from rest_framework import serializers
-
-
-from django.conf import settings
-from firebase_admin import db, credentials, get_app
-import datetime
 
 
 class FirebaseNotification:
@@ -22,7 +18,6 @@ class FirebaseNotification:
 
     def update_notification(self, notification):
         ref = self.get_notification_ref(notification)
-
         ref.set(
             {
                 "kind": str(notification.kind),

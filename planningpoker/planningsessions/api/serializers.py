@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from users.api.serializers import UserSerializer
 from stories.api.serializers import StorySerializer
+from users.api.serializers import UserSerializer
+
 from ..models import (
     PlanningSession,
     PlanningSessionComment,

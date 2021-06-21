@@ -1,6 +1,7 @@
-from .test_setup import TestSetUp
 from rest_framework.test import force_authenticate
+
 from .factories import UserFactory
+from .test_setup import TestSetUp
 
 
 class TestViews(TestSetUp):
