@@ -26,11 +26,17 @@ class FirebaseVote:
 
         ref.set(
             {
-                "user": str(vote.user.id),
+                "id": str(vote.id),
+                "user": {
+                    "id": str(vote.user.id),
+                    "firstName": vote.user.first_name,
+                    "lastName": vote.user.last_name,
+                    "initials": vote.user.get_initials(),
+                },
                 "story": str(vote.story.id),
                 "point": vote.point,
-                "created_at": str(vote.created_at),
-                "updated_at": str(vote.updated_at),
+                "createdAt": str(vote.created_at),
+                "updatedAt": str(vote.updated_at),
             }
         )
 
@@ -53,7 +59,12 @@ class FirebasePlanningSession:
 
         focused_story = "None"
         if session.focused_story is not None:
-            focused_story = str(session.focused_story)
+            focused_story = {
+                "id": str(session.focused_story.id),
+                "projectId": str(session.focused_story.project.id),
+                "title": session.focused_story.title,
+                "description": session.focused_story.description,
+            }
 
         ref.set(focused_story)
 
@@ -105,9 +116,17 @@ class FirebasePlanningSessionComment:
 
         ref.set(
             {
+                "id": str(comment.id),
                 "parent": str(comment.parent),
-                "user": str(comment.user),
+                "user": {
+                    "id": str(comment.user.id),
+                    "initials": comment.user.get_initials(),
+                    "firstName": comment.user.first_name,
+                    "lastName": comment.user.last_name,
+                },
                 "text": comment.text,
+                "createdAt": str(comment.created_at),
+                "updatedAt": str(comment.updated_at),
             }
         )
 
