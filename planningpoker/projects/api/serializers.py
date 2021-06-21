@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from users.api.serializers import UserSerializer
 
-from ..models import Project, ProjectMember
+from ..models import Project, ProjectInviteCode, ProjectMember
 
 from stories.api.serializers import StorySerializer
 
@@ -9,6 +9,7 @@ from stories.api.serializers import StorySerializer
 class ProjectMemberDetailSerializer(serializers.ModelSerializer):
     project_id = serializers.UUIDField(write_only=True)
     user_id = serializers.UUIDField(write_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = ProjectMember
@@ -71,4 +72,15 @@ class ProjectSerializer(serializers.ModelSerializer):
             "members",
             "created_at",
             "updated_at",
+        ]
+
+
+class ProjectInviteCodeSerialiser(serializers.ModelSerializer):
+    expires_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = ProjectInviteCode
+        fields = [
+            "id",
+            "expires_at",
         ]

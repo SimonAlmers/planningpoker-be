@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
 
-from .models import Project, ProjectMember
+from .models import Project, ProjectInviteCode, ProjectMember
 
 # Register your models here.
 
@@ -24,3 +24,7 @@ class ProjectAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         queryset = queryset.annotate(member_count=Count("members"))
         return queryset
+
+@admin.register(ProjectInviteCode)
+class ProjectInviteCodeAdmin(admin.ModelAdmin):
+    readonly_fields = ["id", "created_at"]

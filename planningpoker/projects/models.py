@@ -1,5 +1,6 @@
 import uuid as uuid_lib
-
+import datetime
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
 from common.models import TimeStampedModel, UUIDModel
@@ -32,6 +33,11 @@ class Project(UUIDModel, TimeStampedModel):
     def __str__(self):
         return self.title
 
+    def create_invite_code(self):
+        invite = ProjectInviteCode.objects.create(project=self)
+        return invite
+        
+
     def get_members(self):
         """
         Returns related project members for the project.
@@ -42,6 +48,25 @@ class Project(UUIDModel, TimeStampedModel):
         from stories.models import Story
 
         return Story.objects.filter(project=self)
+
+
+class ProjectInviteCode(UUIDModel, TimeStampedModel):
+    project = models.OneToOneField(
+        Project,
+        to_field="id",
+        related_name="invite_code",
+        on_delete=models.CASCADE, 
+    )
+
+    def is_valid(self):
+        now = timezone.now()
+        diff = now - self.created_at
+        days = diff.days
+        return days < 1
+
+    def expires_at(self):
+        expires_at = self.created_at + datetime.timedelta(days=1)
+        return expires_at
 
 
 class ProjectMember(UUIDModel, TimeStampedModel):
