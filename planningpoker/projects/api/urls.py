@@ -20,4 +20,14 @@ urlpatterns = [
         views.ProjectMemberDetail.as_view(),
         name="project-member-detail",
     ),
+    path(
+        "projects/<uuid:project_id>/invite_code/",
+        views.ProjectInviteCodeDetail.as_view(),
+        name="project-invite-code-detail",
+    ),
+    path(
+        "projects/join/",
+        views.AcceptInviteCode.as_view(),
+        name="accept-project-invite",
+    ),
 ]

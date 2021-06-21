@@ -6,6 +6,11 @@ from .models import Notification, SessionCommentNotificationData
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "kind",
+        "read_at",
+    ]
     readonly_fields = ["id"]
 
 
