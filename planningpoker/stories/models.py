@@ -30,11 +30,13 @@ class StoryManager(models.Manager):
 class Story(UUIDModel, TimeStampedModel):
     POINT_SCALE = [
         (0, "Pass"),
-        (1, 1),
-        (2, 2),
-        (3, 3),
-        (5, 5),
-        (8, 8),
+        (1, "1/2"),
+        (2, "1"),
+        (3, "2"),
+        (4, "3"),
+        (5, "5"),
+        (6, "8"),
+        (7, "13"),
     ]
 
     FEATURE = 1
