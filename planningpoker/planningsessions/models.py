@@ -1,15 +1,16 @@
 from common.models import TimeStampedModel, UUIDModel
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save, pre_delete
 from projects.models import Project
 from stories.models import Story
-from django.conf import settings
+
 from .tasks.firebase import (
-    FirebaseVote,
     FirebasePlanningSession,
     FirebasePlanningSessionComment,
     FirebasePlanningSessionParticipant,
+    FirebaseVote,
 )
-from django.db.models.signals import post_save, pre_delete
 
 
 class PlanningSession(UUIDModel, TimeStampedModel):

@@ -1,5 +1,5 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
 from projects.models import ProjectMember
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
 class IsSessionProjectMember(BasePermission):
@@ -12,18 +12,6 @@ class IsSessionProjectMember(BasePermission):
             return member is not None
 
         return member is not None and member.role >= ProjectMember.MEMBER
-
-
-# class IsSessionParticipant(BasePermission):
-#     def has_object_permission(self, request, view, obj):
-#         user = request.user
-#         project = obj.project
-#         member = project.objects.get_members().filter(user=user, project=project)
-
-#         if request.method in SAFE_METHODS:
-#             return member is not None
-
-#         return member is not None and member.role >= ProjectMember.MEMBER
 
 
 class SessionCommentAuthorOrReadOnly(BasePermission):

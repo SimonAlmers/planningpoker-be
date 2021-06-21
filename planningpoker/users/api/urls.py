@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.urls import include, path
 from djoser.views import UserViewSet
+
 from . import views
 
 me_paths = UserViewSet.as_view(

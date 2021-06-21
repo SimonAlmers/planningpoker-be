@@ -3,8 +3,6 @@ from django.db.models import Count
 
 from .models import Project, ProjectInviteCode, ProjectMember
 
-# Register your models here.
-
 
 class ProjectMemberInline(admin.TabularInline):
     model = Project.members.through

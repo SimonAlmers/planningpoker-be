@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Notification, SessionCommentNotificationData
 
-# Register your models here.
+from .models import Notification, SessionCommentNotificationData
 
 
 @admin.register(Notification)

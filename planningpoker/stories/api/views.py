@@ -76,8 +76,6 @@ class StoryReorder(generics.UpdateAPIView):
             return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # return super().update(request, *args, **kwargs)
-
 
 class StoryCommentGeneric:
     permission_classes = [IsAuthenticated, StoryPermissionIsMemberOrReadOnly]

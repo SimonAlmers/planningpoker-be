@@ -1,7 +1,8 @@
-from .test_setup import TestSetUp
-from rest_framework.test import force_authenticate
 from projects.models import Project, ProjectMember
+from rest_framework.test import force_authenticate
+
 from .factories import ProjectFactory
+from .test_setup import TestSetUp
 
 
 class TestViews(TestSetUp):

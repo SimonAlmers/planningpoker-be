@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from projects.api.permissions import IsProjectMemberOrReadOnly
+from projects.models import Project
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
@@ -14,12 +16,10 @@ from .permissions import (
     VoteOwnerOrReadOnly,
 )
 from .serializers import (
-    PlanningSessionSerializer,
     PlanningSessionCommentSerializer,
+    PlanningSessionSerializer,
     VoteSerializer,
 )
-from projects.models import Project
-from projects.api.permissions import IsProjectMemberOrReadOnly
 
 
 class PlanningSessionGeneric:

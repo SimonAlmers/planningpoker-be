@@ -1,9 +1,8 @@
 from rest_framework import serializers
+from stories.api.serializers import StorySerializer
 from users.api.serializers import UserSerializer
 
 from ..models import Project, ProjectInviteCode, ProjectMember
-
-from stories.api.serializers import StorySerializer
 
 
 class ProjectMemberDetailSerializer(serializers.ModelSerializer):
