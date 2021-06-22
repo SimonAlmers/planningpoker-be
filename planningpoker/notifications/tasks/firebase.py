@@ -21,13 +21,32 @@ class FirebaseNotification:
         ref.set(
             {
                 "id": str(notification.id),
-                "kind": str(notification.kind),
+                "kind": notification.kind,
                 "sender": str(notification.sender),
                 "message": str(notification.message),
                 "context": str(notification.context),
                 "readAt": str(notification.read_at),
                 "createdAt": str(notification.created_at),
                 "updatedAt": str(notification.updated_at),
+            }
+        )
+    
+    def update_session_invite(self, session_invite):
+        session = session_invite.session
+        notification = session_invite.notification
+        ref = self.get_notification_ref(notification)
+        ref.set(
+            {
+                "id": str(notification.id),
+                "kind": notification.kind,
+                "sender": str(notification.sender),
+                "message": str(notification.message),
+                "context": str(notification.context),
+                "readAt": str(notification.read_at),
+                "createdAt": str(notification.created_at),
+                "updatedAt": str(notification.updated_at),
+                "sessionId": str(session.id),
+                "projectId": str(session.project.id),
             }
         )
 

@@ -59,6 +59,7 @@ class FirebasePlanningSession:
                 "projectId": str(session.focused_story.project.id),
                 "title": session.focused_story.title,
                 "description": session.focused_story.description,
+                "score": session.focused_story.score,
             }
 
         ref.set(focused_story)

@@ -5,6 +5,7 @@ from django.db.models.signals import post_save, pre_delete
 from projects.models import Project
 from stories.models import Story
 
+
 from .tasks.firebase import (
     FirebasePlanningSession,
     FirebasePlanningSessionComment,
@@ -25,7 +26,25 @@ class PlanningSession(UUIDModel, TimeStampedModel):
         null=True,
     )
 
-    # Notify Project.members when session is created
+    def collect_unestimated_stories(self):
+        stories = Story.objects.filter(project=self.project, score=None)
+        self.focused_story = stories.first()
+        self.stories.set(stories)
+        self.save()
+
+    def notify_all_members(self):
+        from notifications.models import Notification, SessionInviteNotificationData
+
+        members = self.project.projectmember_set.all()
+        for member in members:
+            notification = Notification.objects.create(
+                kind=2,
+                message="Someone Created a Session",
+                context="Join the planning session now!",
+                sender=None,
+                user=member.user,
+            )
+            SessionInviteNotificationData.objects.create(notification=notification, session=self)
 
 
 class PlanningSessionParticipant(UUIDModel, TimeStampedModel):
@@ -69,6 +88,9 @@ class Vote(UUIDModel, TimeStampedModel):
 
 
 def planningsession_post_save(sender, instance, created, **kwargs):
+    if created:
+        instance.collect_unestimated_stories()
+        instance.notify_all_members()
     firebase = FirebasePlanningSession()
     firebase.update_session(instance)
 

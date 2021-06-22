@@ -2,7 +2,7 @@ from common.models import TimeStampedModel, UUIDModel
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
-from planningsessions.models import PlanningSessionComment
+from planningsessions.models import PlanningSessionComment, PlanningSession
 
 from stories.models import Story, StoryComment
 from .tasks.firebase import FirebaseNotification
@@ -87,7 +87,7 @@ class SessionInviteNotificationData(models.Model):
         related_name="session_invite",
         on_delete=models.CASCADE,
     )
-    # invite = models.ForeignKey(, to_field="id", on_delete=models.CASCADE)
+    session = models.ForeignKey(PlanningSession, to_field="id", on_delete=models.CASCADE)
 
 
 
@@ -113,6 +113,16 @@ class StoryNotificationData(models.Model):
 
 
 
+def session_invite_post_save(sender, instance, created, **kwargs):
+    firebase = FirebaseNotification()
+    firebase.update_session_invite(instance)
+
+
+def session_invite_pre_delete(sender, instance, **kwargs):
+    firebase = FirebaseNotification()
+    firebase.delete_notification(instance.notification)
+
+
 def notification_post_save(sender, instance, created, **kwargs):
     firebase = FirebaseNotification()
     firebase.update_notification(instance)
@@ -122,6 +132,11 @@ def notification_pre_delete(sender, instance, **kwargs):
     firebase = FirebaseNotification()
     firebase.delete_notification(instance)
 
+
+
+
+post_save.connect(session_invite_post_save, sender=SessionInviteNotificationData)
+pre_delete.connect(session_invite_pre_delete, sender=SessionInviteNotificationData)
 
 post_save.connect(notification_post_save, sender=Notification)
 pre_delete.connect(notification_pre_delete, sender=Notification)
