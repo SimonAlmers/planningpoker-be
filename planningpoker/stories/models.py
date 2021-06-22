@@ -3,6 +3,8 @@ from common.models import TimeStampedModel, UUIDModel
 from django.conf import settings
 from django.db import models
 from projects.models import Project
+from .tasks.firebase import FirebaseStoryComment
+from django.db.models.signals import post_save, pre_delete
 
 
 class StoryManager(models.Manager):
@@ -142,3 +144,16 @@ class StoryComment(UUIDModel, TimeStampedModel):
     )
     text = models.TextField()
     story = models.ForeignKey(Story, to_field="id", on_delete=models.CASCADE)
+
+
+def story_comment_post_save(sender, instance, created, **kwargs):
+    firebase = FirebaseStoryComment()
+    firebase.update_comment(instance)
+
+
+def story_comment_pre_delete(sender, instance, **kwargs):
+    firebase = FirebaseStoryComment()
+    firebase.delete_comment(instance)
+
+post_save.connect(story_comment_post_save, sender=StoryComment)
+pre_delete.connect(story_comment_pre_delete, sender=StoryComment)
