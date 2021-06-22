@@ -9,7 +9,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://planningpoker.simonalmers.dev",
     "https://develop-planningpoker.simonalmers.dev",
-    "*.simonalmers.dev",
 ]
 
 DATABASES = {"default": dj_database_url.config(default=os.environ["DATABASE_URL"])}
